@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>коты</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="modal"></div>
+
+    <img id="id-man" src="./img/man.png" style="left: 100px; top: 100px" />
+    <img
+      id="id-ball"
+      src="./img/balla.png"
+      style="left: 100px; top: 100px; opacity: 0"
+    />
+    <img id="id-background" src="./img/location.webp" />
+    <div id="commonCat"></div>
+    <div id="superCat"></div>
+    <div id="helmetCat"></div>
+    <div id="motoCat"></div>
+    <div id="flagCat"></div>
+    <div id="catBalls"></div>
+    <div id="lostItems"></div>
+
+    <!-- Параметры котов cats={} и прочие глобальные переменные-->
+    <script src="state.js"></script>
+
+    <!-- Параметры уровней. Запуск нового уровня: letLever() -->
+    <script src="levels.js"></script>
+
+    <!-- Запуск действий человека: startManActions() ; Остановка: stopManActions()-->
+    <script src="man.js"></script>
+
+    <!-- Рендер движения котов и человека. Проверка попаданий по врагам, условия победы и поражения.
+     Запуск: startRender(); Остановка: stopRender
+     -->
+    <script src="render.js"></script>
+
+    <!-- Меню старта игры -->
+    <script>
+      const startMenu = () => {
+        level = 0;
+        const menuEl = document.getElementById("modal");
+        menuEl.style = "font-size: 20px; font-weight: 400";
+        menuEl.innerHTML = `
+        <span style="font-weight:900">КОТЫ НЕ ПРОЙДУТ!</span>
+        <br/>
+        <br/>
+        <button id="controlButton" onclick="startGame()">Старт</button>
+        <br/> Управление:
+        <br/> движение вверх: ⬆ или W 
+        <br/> движение вниз: ⬇ или S
+        <br/> прицел: Mouse
+        <br/> выстрел: Click`;
+      };
+      const startGame = () => {
+        level = 1;
+        const menuEl = document.getElementById("modal");
+        const controlButtonEl = document.getElementById("controlButton");
+        menuEl.style = "display:none";
+        controlButtonEl.style = "display:none";
+        letLever();
+      };
+      startMenu();
+    </script>
+  </body>
+</html>
