@@ -22,32 +22,32 @@ const stopRender = () => {
 
 // Рендер котов
 const renderOfCats = (cat) => {
-  for (let i = 0; i < cat.count; i += 1) {
-    catMoving(i, cat);
-    controlIsCatCame(i, cat);
-    isCatShot(i, cat);
-    /* if (isBreake) {isBreake = false; break} */
+  for (let i = 0; i < cat.x.length; i += 1) {
+    if (cat.alive[i] == true) {
+      catMoving(i, cat);
+      controlIsCatCame(i, cat);
+      isCatShot(i, cat);
+    }
   }
-};
 
-// Движение врагов
-const catMoving = (i, cat) => {
-  (cat.x[i] -= cat.speed * turbo),
-    (document.getElementById(`${cat.name}${i}`).style.left = cat.x[i] + "px");
-  document.getElementById(`${cat.name}${i}`).style.top = cat.y[i] + "px";
+  // Движение врагов
+  function catMoving(i, cat) {
+    cat.x[i] -= cat.speed * turbo;
+    document.getElementById(cat.name + i).style.left = cat.x[i] + "px";
+    document.getElementById(cat.name + i).style.top = cat.y[i] + "px";
+  }
 };
 
 //Проверка не дошел ли враг
-
-const controlIsCatCame = (i, cat) => {
+function controlIsCatCame(i, cat) {
   if (cat.x[i] <= 100) {
     gameOver();
   }
-};
+}
 
 //Попадание клубком по врагу
 
-const isCatShot = (i, cat) => {
+function isCatShot(i, cat) {
   if (
     parseInt(ball.left) >= cat.x[i] &&
     parseInt(ball.left) <= cat.x[i] + (window.innerWidth / 1000) * 30 &&
@@ -81,28 +81,21 @@ const isCatShot = (i, cat) => {
       catDefeted(i, cat);
     }
   }
-};
+}
 
 //Когда враг побежден:
 const catDefeted = (i, cat) => {
-  document.getElementById(`${cat.name}`).innerHTML = "";
-  cat.x.splice(i, 1);
-  cat.y.splice(i, 1);
+  cat.alive.splice(i, 1, false);
   cat.count = cat.count - 1;
   ball.left = "0";
   ball.opacity = "0";
   isWinLevel();
-
-  for (let a = 0; a < cat.count; a += 1) {
-    let element = document.getElementById(cat.name).innerHTML;
-    document.getElementById(cat.name).innerHTML =
-      element +
-      `<img  id="${cat.name}${a}" src="${cat.png}" style="left:${cat.x[a]}; top:${cat.y[a]}; position: absolute; opacity:1 ; z-index: 2; width: 10vw; ">`;
-  }
+  let element = document.getElementById(cat.name + i);
+  element.remove();
 };
 
 //Проверка победы
-const isWinLevel= ()=> {
+const isWinLevel = () => {
   if (
     cats.filter((i) => i.count).length == 0 &&
     cats.filter((i) => i.levelCount).length == 0
@@ -110,7 +103,7 @@ const isWinLevel= ()=> {
     level += 1;
     letLever();
   }
-}
+};
 
 // Проверка условия появления новых врагов
 const spawnOfCats = (cat) => {
@@ -132,12 +125,13 @@ const letSpawnOfCats = (cat, catX, catY) => {
   cat.count += 1;
   cat.x.push(catX);
   cat.y.push(catY);
+  cat.alive.push(true);
   let element = document.getElementById(cat.name).innerHTML;
   document.getElementById(cat.name).innerHTML =
     element +
-    `<img  id="${cat.name}${cat.count - 1}" src="${cat.png}" style="
-  left:${cat.x[cat.count - 1]}px; 
-  top:${cat.y[cat.count - 1]}px;
+    `<img  id="${cat.name}${cat.x.length - 1}" src="${cat.png}" style="
+  left:${cat.x[cat.x.length - 1]}px; 
+  top:${cat.y[cat.x.length - 1]}px;
   position: absolute; opacity:1 ; z-index: 2; width: 10vw;">`;
 };
 

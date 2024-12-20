@@ -53,6 +53,7 @@ const setlevelEnemies = (enemies) => {
             spawnOfCat: enemies[i].spawnOfCat,
             x: [],
             y: [],
+            alive:[],
             count: 0,
             spawnTimer: 0,
           },
